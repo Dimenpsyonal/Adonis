@@ -558,7 +558,7 @@ return function(Vargs, env)
 					else 
 						Remote.Send(v, "Function", "ChatMessage", service.Filter(args[2], plr, v), Color3.fromRGB(255, 64, 77))
 					end
-					
+
 				end
 			end
 		};
@@ -2021,7 +2021,7 @@ return function(Vargs, env)
 					end
 				end
 
-					for i, v in players do
+				for i, v in players do
 					Routine(function()
 						local response = Remote.GetGui(v, "Vote", {
 							Question = question;
@@ -2395,7 +2395,7 @@ return function(Vargs, env)
 
 					if service.Lighting:FindFirstChildWhichIsA("Atmosphere") ~= nil then
 						local Atmosphere = service.Lighting:FindFirstChildWhichIsA("Atmosphere")
-						
+
 						Atmosphere.Name = Variables.OriginalAtmosphereSettings.Name
 						Atmosphere.Density = Variables.OriginalAtmosphereSettings.Density
 						Atmosphere.Offset = Variables.OriginalAtmosphereSettings.Offset
@@ -2533,7 +2533,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		Clip = {
 			Prefix = Settings.Prefix;
 			Commands = {"clip", "unnoclip"};
@@ -2546,7 +2546,7 @@ return function(Vargs, env)
 					if old then
 						if old.Clip.Value then
 							old.Clip.Value = false
-							
+
 							task.delay(.5,function() old:Destroy() end)
 
 							if Settings.CommandFeedback then
@@ -2802,7 +2802,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		BubbleChat = {
 			Prefix = Settings.Prefix;
 			Commands = {"bchat", "dchat", "bubblechat", "dialogchat"};
@@ -2858,7 +2858,6 @@ return function(Vargs, env)
 						continue
 					end
 					local beam = Deps.Assets.TrackBeam:Clone()
-					local billboard = Deps.Assets.TrackingGUI:Clone()
 
 					task.defer(function()
 						local gui = service.New("BillboardGui", {
@@ -2868,16 +2867,6 @@ return function(Vargs, env)
 							StudsOffset = Vector3.new(0, 2, 0),
 							Size = UDim2.fromOffset(100, 40),
 						})
-																																																																																																																								
-						billboard.Name = plr.Name.."_Tracker"
-						billboard.Adornee = plr.Character.HumanoidRootPart
-						billboard.Username.Text = plr.Name
-						
-						beam.Name = "TrackingBeam"
-						beam.Color = ColorSequence.new(player.TeamColor.Color)
-						beam.Attachment0 = rootPart:FindFirstChild("AdonisTrackingAtt")
-						beam.Attachment1 = plrHum:FindFirstChild("AdonisTrackingAtt")
-						beam.Parent = billboard
 						
 						local frame = service.New("Frame", {
 							Parent = gui,
@@ -2896,6 +2885,25 @@ return function(Vargs, env)
 							TextScaled = true,
 							TextWrapped = true,
 						})
+						
+						if not char.HumanoidRootPart:FindFirstChild("AdonisTrackingAtt") then
+							local att = service.New('Attachment')
+							att.Name = "AdonisTrackingAtt"
+							att.Parent = char.HumanoidRootPart
+						end
+						if not plrChar.HumanoidRootPart:FindFirstChild("AdonisTrackingAtt") then
+							local att = service.New('Attachment')
+							att.Name = "AdonisTrackingAtt"
+							att.Parent = plrChar.HumanoidRootPart
+						end
+						
+						local beam = Deps.Assets.TrackBeam:Clone()
+						
+						beam.Name = "TrackingBeam"
+						beam.Color = ColorSequence.new(plr.TeamColor.Color)
+						beam.Attachment0 = rootPart:FindFirstChild("AdonisTrackingAtt")
+						beam.Attachment1 = plrHum:FindFirstChild("AdonisTrackingAtt")
+						beam.Parent = gui
 
 						local arrow = name:Clone()
 						arrow.Position = UDim2.fromOffset(0, 20)
@@ -4633,7 +4641,7 @@ return function(Vargs, env)
 			Description = "Teleport player1(s) to player2, a waypoint, or specific coords, use :tp player1 waypoint-WAYPOINTNAME to use waypoints, x,y,z for coords";
 			AdminLevel = "Moderators";
 			Function = function(plr: Player, args: {string})
-				
+
 				if args[2] and (string.match(args[2], "^waypoint%-(.*)") or string.match(args[2], "wp%-(.*)")) then
 					local m = string.match(args[2], "^waypoint%-(.*)") or string.match(args[2], "wp%-(.*)")
 					local point
@@ -4643,7 +4651,7 @@ return function(Vargs, env)
 							point=v
 						end
 					end
-					
+
 					for _, v in service.GetPlayers(plr, args[1], { NoFakePlayer = true }) do
 						if point then
 							local Character = v.Character
@@ -4890,7 +4898,7 @@ return function(Vargs, env)
 					for i = (l-1) * math.floor(numPlayers/lines) + 1, l * math.floor(numPlayers/lines) do
 						local char = players[i].Character
 						if not char then continue end
-						
+
 						char:SetAttribute("ADONIS_isTeleporting", true)
 						task.delay(0.5, function() if char then char:SetAttribute("ADONIS_isTeleporting", nil) end end)
 
@@ -4921,7 +4929,7 @@ return function(Vargs, env)
 					for i = lines*math.floor(numPlayers/lines)+1, lines*math.floor(numPlayers/lines) + numPlayers%lines do
 						local char = players[i].Character
 						if not char then continue end
-						
+
 						char:SetAttribute("ADONIS_isTeleporting", true)
 						task.delay(0.5, function() if char then char:SetAttribute("ADONIS_isTeleporting", nil) end end)
 
@@ -4982,7 +4990,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		RemoveLeaderstat = {
 			Prefix = Settings.Prefix;
 			Commands = {"removestats", "delstat"};
@@ -5015,7 +5023,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		NewStat = {
 			Prefix = Settings.Prefix;
 			Commands = {"newstat", "createstat", "cstat"};
@@ -5029,11 +5037,11 @@ return function(Vargs, env)
 				end
 				local statType = if args[2] then args[2]:lower() else "number"
 				local FilteredStatName = service.BroadcastFilter(statName, plr)
-				
+
 				if FilteredStatName ~= statName then
 					error("Stat name is filtered! Sorry!")
 				end
-				
+
 				for _,p in service.GetPlayers() do 
 					local leaderstats = p:FindFirstChild("leaderstats") or service.New("Folder")
 					leaderstats.Name = "leaderstats"
@@ -5051,7 +5059,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		AddToStat = {
 			Prefix = Settings.Prefix;
 			Commands = {"add", "addtostat", "addstat"};
@@ -5458,7 +5466,7 @@ return function(Vargs, env)
 				end
 			end,
 		},
-		
+
 		AvatarItem = {
 			Prefix = Settings.Prefix;
 			Commands = {"avataritem", "giveavtaritem", "catalogitem", "accessory", "hat", "tshirt", "givetshirt", "shirt", "giveshirt", "pants", "givepants", "face", "anim",
@@ -5491,7 +5499,7 @@ return function(Vargs, env)
 					local humanoid: Humanoid? = v.Character and v.Character:FindFirstChildOfClass("Humanoid")
 					if humanoid then
 						local humanoidDesc: HumanoidDescription = humanoid:GetAppliedDescription()
-						
+
 						if not typeEnum then
 							if v.Character:GetAttribute("LoadingSavedOutfit") then continue end
 
@@ -5540,7 +5548,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		RemoveTShirt = {
 			Prefix = Settings.Prefix;
 			Commands = {"removetshirt", "untshirt", "notshirt"};
@@ -6288,7 +6296,7 @@ return function(Vargs, env)
 				end
 			end
 		};
-		
+
 		GivePackage = {
 			Prefix = Settings.Prefix;
 			Commands = {"package", "givepackage", "setpackage", "bundle"};
@@ -6513,7 +6521,7 @@ return function(Vargs, env)
 				for i, v in 
 					if Logs.Errors.__meta == "DLL" then 
 						Logs.Errors:GetAsTable() 
-					else 
+						else 
 						Logs.Errors 
 				do
 					table.insert(tab, i, {
