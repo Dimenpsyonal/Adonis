@@ -2857,6 +2857,8 @@ return function(Vargs, env)
 						Functions.Hint(`{service.FormatPlayer(v)} doesn't currently have a HumanoidRootPart/Head`, { plr })
 						continue
 					end
+					local beam = Deps.Assets.TrackBeam:Clone()
+					local billboard = Deps.Assets.TrackingGUI:Clone()
 
 					task.defer(function()
 						local gui = service.New("BillboardGui", {
@@ -2866,12 +2868,17 @@ return function(Vargs, env)
 							StudsOffset = Vector3.new(0, 2, 0),
 							Size = UDim2.fromOffset(100, 40),
 						})
-						local beam = service.New("SelectionPartLasso", {
-							Parent = gui,
-							Part = rootPart,
-							Humanoid = plrHum,
-							Color3 = v.TeamColor.Color,
-						})
+																																																																																																																								
+						billboard.Name = plr.Name.."_Tracker"
+						billboard.Adornee = plr.Character.HumanoidRootPart
+						billboard.Username.Text = plr.Name
+						
+						beam.Name = "TrackingBeam"
+						beam.Color = ColorSequence.new(player.TeamColor.Color)
+						beam.Attachment0 = rootPart:FindFirstChild("AdonisTrackingAtt")
+						beam.Attachment1 = plrHum:FindFirstChild("AdonisTrackingAtt")
+						beam.Parent = billboard
+						
 						local frame = service.New("Frame", {
 							Parent = gui,
 							BackgroundTransparency = 1,
@@ -2881,7 +2888,7 @@ return function(Vargs, env)
 							Parent = frame,
 							Text = service.FormatPlayer(v),
 							BackgroundTransparency = 1,
-							Font = Enum.Font.Arial,
+							Font = Enum.Font.SourceSansBold,
 							TextColor3 = Color3.new(1, 1, 1),
 							TextStrokeColor3 = Color3.new(0, 0, 0),
 							TextStrokeTransparency = 0,
@@ -2899,7 +2906,7 @@ return function(Vargs, env)
 
 						local charRemovingConn
 						local teamChangeConn = v:GetPropertyChangedSignal("TeamColor"):Connect(function()
-							beam.Color3 = v.TeamColor.Color
+							beam.Color = ColorSequence.new(v.TeamColor.Color)
 						end)
 						local plrCharRemovingConn = plr.CharacterRemoving:Once(function()
 							Remote.RemoveLocal(plr, `{v.Name}Tracker`)
