@@ -103,13 +103,14 @@ return function(Vargs, GetEnv)
 			service.Events.LogAdded:Fire(Logs.TabToType(tab), log, tab)
 		end;
 
-		LogAudit = function(moderatorId, action, targetId, details)
+		LogAudit = function(plr, action, targetPlayerName, additionalDetails)
 			local logEntry = {
-				ModeratorId = moderatorId;
-				Action = action;
-				TargetId = targetId;
-				Details = details;
-				Time = os.time();
+				Timestamp = os.time(),
+				ModeratorId = plr.UserId,
+				ModeratorName = plr.Name,
+				Action = action,
+				TargetPlayer = targetPlayerName,
+				AdditionalDetails = additionalDetails or "N/A",
 			}
 			Logs:AddLog(Logs.AuditLogs, logEntry);
 		end;
